@@ -3,7 +3,7 @@ import PrimaryButton from '../components/PrimaryButton'
 
 function StartScreen() {
     return (<View style = {styles.inputContainer}>
-        <TextInput style = {styles.inputField} maxLength={2}/>
+        <TextInput style = {styles.inputField} maxLength={2} keyboardType='number-pad'/>
         <PrimaryButton>Confirm</PrimaryButton>
         <PrimaryButton>Reset</PrimaryButton>
     </View>);
@@ -12,7 +12,7 @@ function StartScreen() {
 const styles = StyleSheet.create({
    inputContainer :  {
         marginTop: 100,
-        padding: 20,
+        padding: 7,
         backgroundColor: '#72063c',
         margin: 20,
         elevation: 4,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     inputField: {
         height: 50,
         width: 50,
-        fontSize: 32,
+        fontSize: 30,
         color: '#ddb52f',
         borderBottomColor: '#ddb52f',
         borderBottomWidth: 2,
