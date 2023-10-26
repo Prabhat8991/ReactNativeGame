@@ -4,16 +4,23 @@ import PrimaryButton from '../components/PrimaryButton'
 function StartScreen() {
     return (<View style = {styles.inputContainer}>
         <TextInput style = {styles.inputField} maxLength={2} keyboardType='number-pad'/>
-        <PrimaryButton>Confirm</PrimaryButton>
+        <View style = {styles.buttonContainerStyle}>
+        <View style = {styles.buttonStyle}>
+        <PrimaryButton >Confirm</PrimaryButton>
+        </View>
+        <View style = {styles.buttonStyle}>
         <PrimaryButton>Reset</PrimaryButton>
+        </View> 
+        </View>
     </View>);
 }
 
 const styles = StyleSheet.create({
    inputContainer :  {
+        alignItems: 'center',
         marginTop: 100,
         padding: 7,
-        backgroundColor: '#72063c',
+        backgroundColor: '#4e0329',
         margin: 20,
         elevation: 4,
         borderRadius: 10,
@@ -34,6 +41,12 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         fontWeight: 'bold',
         textAlign: 'center'
+    },
+    buttonStyle: {
+        flex: 1
+    },
+    buttonContainerStyle: {
+        flexDirection: 'row'
     }
 })
 
