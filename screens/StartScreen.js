@@ -1,82 +1,97 @@
-import {View, TextInput, StyleSheet, Alert} from 'react-native'
-import PrimaryButton from '../components/PrimaryButton'
 import { useState } from 'react';
+import { TextInput, View, StyleSheet, Alert } from 'react-native';
 
-function StartScreen() {
+import PrimaryButton from '../components/ui/PrimaryButton';
 
-    const [enteredText, setEnteredText] = useState('')
+function StartGameScreen({onPickedNumber}) {
+  const [enteredNumber, setEnteredNumber] = useState('');
 
-    function numberInputHandler(inputText) {
-        setEnteredText(inputText)
+  function numberInputHandler(enteredText) {
+    console.log('enteredText ' + enteredText);
+    setEnteredNumber(enteredText);
+  }
+
+  function resetInputHandler() {
+    setEnteredNumber('');
+  }
+
+  function confirmInputHandler() {
+    console.log('confirmInputHandler clicked ');
+
+    console.log('Before parsing ' + enteredNumber);
+
+    const chosenNumber = parseInt(enteredNumber);
+
+    console.log('ChosenNumber ' + chosenNumber);
+
+    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert(
+        'Invalid number!',
+        'Number has to be a number between 1 and 99.',
+        [{ text: 'Okay', style: 'destructive', onPress: resetInputHandler }]
+      );
+      return;
     }
+    onPickedNumber(chosenNumber);
 
-    function handleAlert() {
-        setEnteredText('')
-    }
+    console.log('Valid number!');
+  }
 
-    function onConfirmPress() {
-      const enteredText = parseInt(enteredText)
-
-      console.log("Confirm clicked")
-
-      if(isNaN(enteredText) || enteredText <= 0 || enteredText > 99) {
-          console.log("Show Alert")
-
-          Alert.alert('Invalid Number', 'Number has to be between 0 and 99', 
-          [{text: 'OK', style: 'destructive', onPress: handleAlert}])
-
-          return;
-      }
-    }
-
-    return (<View style = {styles.inputContainer}>
-        <TextInput style = {styles.inputField} maxLength={2} keyboardType='number-pad'
-        value={enteredText}
-        onChangeText={numberInputHandler}/>
-        <View style = {styles.buttonContainerStyle}>
-        <View style = {styles.buttonStyle}>
-        <PrimaryButton onConfirmPress={onConfirmPress}>Confirm</PrimaryButton>
+  return (
+    <View style={styles.inputContainer}>
+      <TextInput
+        style={styles.numberInput}
+        maxLength={2}
+        keyboardType="number-pad"
+        autoCapitalize="none"
+        autoCorrect={false}
+        onChangeText={numberInputHandler}
+        value={enteredNumber}
+      />
+      <View style={styles.buttonsContainer}>
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onConfirmPress={resetInputHandler}>Reset</PrimaryButton>
         </View>
-        <View style = {styles.buttonStyle}>
-        <PrimaryButton>Reset</PrimaryButton>
-        </View> 
+        <View style={styles.buttonContainer}>
+          <PrimaryButton onConfirmPress={confirmInputHandler}>Confirm</PrimaryButton>
         </View>
-    </View>);
+      </View>
+    </View>
+  );
 }
 
+export default StartGameScreen;
+
 const styles = StyleSheet.create({
-   inputContainer :  {
-        alignItems: 'center',
-        marginTop: 100,
-        padding: 7,
-        backgroundColor: '#4e0329',
-        margin: 20,
-        elevation: 4,
-        borderRadius: 10,
-        shadowColor: 'black',
-        shadowRadius: 6,
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.25
-
-    },
-    inputField: {
-        height: 50,
-        width: 50,
-        fontSize: 30,
-        color: '#ddb52f',
-        borderBottomColor: '#ddb52f',
-        borderBottomWidth: 2,
-        marginBottom: 10,
-        marginVertical: 8,
-        fontWeight: 'bold',
-        textAlign: 'center'
-    },
-    buttonStyle: {
-        flex: 1
-    },
-    buttonContainerStyle: {
-        flexDirection: 'row'
-    }
-})
-
-export default StartScreen
+  inputContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 100,
+    marginHorizontal: 24,
+    padding: 16,
+    backgroundColor: '#3b021f',
+    borderRadius: 8,
+    elevation: 4,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    shadowOpacity: 0.25,
+  },
+  numberInput: {
+    height: 50,
+    width: 50,
+    fontSize: 32,
+    borderBottomColor: '#ddb52f',
+    borderBottomWidth: 2,
+    color: '#ddb52f',
+    marginVertical: 8,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+  },
+  buttonContainer: {
+    flex: 1,
+  },
+});

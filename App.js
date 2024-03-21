@@ -5,21 +5,46 @@
  * @format
  */
 
-import {StyleSheet, View, ImageBackground, React} from 'react-native';
-
+import {StyleSheet, ImageBackground, SafeAreaView} from 'react-native';
 import StartScreen from './screens/StartScreen';
+import { useState } from 'react';
+import GameScreen from './screens/GameScreen';
+import GameOverScreen from './screens/GameOverScreen';
 
 
 export default function App() {
-  return <View style = {styles.rootScreen}>
-    <ImageBackground 
-    style = {styles.rootScreen} 
-    source={require('./assets/images/background.png')} 
-    resizeMode='cover'
-    imageStyle={styles.backgroundImage}>
-    <StartScreen/>
+   
+  const [userNumber, setUserNumber] = useState()
+  const[gameIsOver, setGameIsOver] = useState(true)
+
+  function onPickedNumber(pickedNumber) {
+    setUserNumber(pickedNumber)
+    setGameIsOver(false)
+  }
+
+  let screen = <StartScreen onPickedNumber = {onPickedNumber}/>
+
+  function gameOverHandler() {
+    setGameIsOver(true)
+  }
+
+  if(userNumber) {
+    screen = <GameScreen userNumber={userNumber} onGameOver={gameOverHandler}/>
+  }
+
+  if(userNumber && gameIsOver) {
+    screen = <GameOverScreen/>
+  }
+  return (
+    <ImageBackground
+      source={require('./assets/images/background.png')}
+      resizeMode="cover"
+      style={styles.rootScreen}
+      imageStyle={styles.backgroundImage}
+    >
+      <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
     </ImageBackground>
-  </View>
+);
 }
 
 const styles = StyleSheet.create({
